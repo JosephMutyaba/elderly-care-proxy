@@ -3,9 +3,10 @@ import { LoginForm } from "@/components/login-form"
 import { createClient } from "@/supabase/client"
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { getUser } from "./actions"
+import { getUser } from "../login/actions"
+import { SignUpForm } from "@/components/signup-form"
 
-export default function Page() {
+export default function SignUpPage() {
   const router = useRouter()
 
   const pathname = usePathname();  // Get the current path
@@ -15,12 +16,12 @@ export default function Page() {
       const user = await getUser();
 
       // Redirect based on login state
-      if (user.data.user && pathname === "/login") {
+      if (user.data.user && pathname === "/signup") {
         // If logged in and currently on login page, redirect to dashboard
         router.push("/");
-      } else if (!user.data.user && pathname !== "/login") {
+      } else if (!user.data.user) {
         // If not logged in and not already on login, redirect to login page
-        router.push("/login");
+        router.push("/signup");
       }
     }
 
@@ -29,7 +30,7 @@ export default function Page() {
 
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
-      <LoginForm />
+      <SignUpForm />
       {/* <p>Christus Semper!</p> */}
     </div>
   )
