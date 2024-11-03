@@ -29,7 +29,6 @@ import {
 import { Input } from "@/components/ui/input"
 import {authenticate} from "@/app/login/actions";
 
-import { redirect } from "next/dist/server/api-utils"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -39,8 +38,6 @@ const formSchema = z.object({
 })
 
 export function LoginForm() {
-  const [signingUp, setSigningUp] = useState<boolean>(false)
-  const [signingIn, setSigningIn] = useState<boolean>(true)
 
   const router = useRouter();
 
@@ -60,7 +57,7 @@ export function LoginForm() {
       toast("Logged in successfully")
 
     } else {
-      toast("Login failed! Make sure you enter the corect credentials")
+      toast("Login failed! Make sure you enter the correct credentials")
     }
 
   }
