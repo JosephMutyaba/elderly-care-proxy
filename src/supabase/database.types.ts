@@ -9,6 +9,99 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      devices: {
+        Row: {
+          created_at: string
+          device_name: string | null
+          id: number
+          status: boolean | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_name?: string | null
+          id?: number
+          status?: boolean | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_name?: string | null
+          id?: number
+          status?: boolean | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      falldetection: {
+        Row: {
+          created_at: string
+          device_id: number
+          fall_detected: boolean | null
+          id: number
+        }
+        Insert: {
+          created_at?: string
+          device_id: number
+          fall_detected?: boolean | null
+          id?: number
+        }
+        Update: {
+          created_at?: string
+          device_id?: number
+          fall_detected?: boolean | null
+          id?: number
+        }
+        Relationships: []
+      }
+      heartrate: {
+        Row: {
+          created_at: string
+          device_id: number
+          heart_rate: number | null
+          id: number
+          spo2: number | null
+        }
+        Insert: {
+          created_at?: string
+          device_id: number
+          heart_rate?: number | null
+          id?: number
+          spo2?: number | null
+        }
+        Update: {
+          created_at?: string
+          device_id?: number
+          heart_rate?: number | null
+          id?: number
+          spo2?: number | null
+        }
+        Relationships: []
+      }
+      locationdata: {
+        Row: {
+          created_at: string
+          device_id: number
+          id: number
+          latitude: number | null
+          longitude: number | null
+        }
+        Insert: {
+          created_at?: string
+          device_id: number
+          id?: number
+          latitude?: number | null
+          longitude?: number | null
+        }
+        Update: {
+          created_at?: string
+          device_id?: number
+          id?: number
+          latitude?: number | null
+          longitude?: number | null
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           created_at: string
