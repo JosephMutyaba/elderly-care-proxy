@@ -19,44 +19,32 @@ const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Building Your Application",
+      title: "Elderly Care System",
       url: "#",
       items: [
         {
-          title: "Routing",
+          title: "Heart rate and Oxygen",
           url: "#",
         },
         {
-          title: "Data Fetching",
+          title: "Realtime Location",
           url: "#",
           isActive: true,
         },
         {
-          title: "Rendering",
+          title: "Motion",
           url: "#",
         },
         {
-          title: "Caching",
+          title: "Falling",
           url: "#",
         },
         {
-          title: "Styling",
+          title: "Alerts",
           url: "#",
         },
         {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
+          title: "Medication",
           url: "#",
         },
       ],

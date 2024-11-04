@@ -20,7 +20,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,7 +29,6 @@ import { Input } from "@/components/ui/input"
 import {authenticate} from "@/app/login/actions";
 
 import { useRouter } from "next/navigation"
-import { useState } from "react"
 
 const formSchema = z.object({
   email: z.string().email(),
