@@ -131,7 +131,6 @@ export async function getLocationData(date: string = new Date().toISOString().sp
         return null
     }
 
-
     // Fetch data within the specified time range
     const { data, error } = await supabase
         .from('locationdata')
