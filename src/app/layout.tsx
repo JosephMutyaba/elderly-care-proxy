@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/theme-provider";
+import React from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,6 +38,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+          {/*<AdminDashboardPage dataTo={children}/>*/}
             {children}
             <Toaster />
           </ThemeProvider>
@@ -45,3 +47,4 @@ export default function RootLayout({
     </html>
   );
 }
+

@@ -38,9 +38,6 @@ export function Chart2() {
             const data = await getFallDetection(selectedDate, selectedHour);
             if (!data) return;
 
-            // Get the current date and hour for filtering
-            const currentHour = new Date().getHours();
-
             // Process data to fit chart requirements
             const processedData = data
                 .map(item => ({
@@ -217,5 +214,18 @@ export function Chart2() {
 //                 </div>
 //             </CardFooter>
 //         </Card>
+//
+
+
+
+
+
+
+// AIzaSyAYSsXFQWUPMaA-Xxc-BKhJDxVhmPOCt5M
+
+
+
+
+
 //     )
 // }

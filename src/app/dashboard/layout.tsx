@@ -9,22 +9,18 @@ import {
 } from "@/components/ui/sidebar"
 import {ModeToggle} from "@/app/customcomponents/modetoggle";
 import {Button} from "@/components/ui/button";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {User} from "@/app/types/userType";
 import {getUser, logout} from "@/app/login/actions";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {createClient} from "@/supabase/client";
-import {Chart1} from "@/app/charts/twomodelchart";
-import {Chart2} from "@/app/charts/chart2";
-import {getFallDetection} from "@/app/actions/actions";
-import {Tables} from "@/supabase/database.types";
 
-export default function AdminDashboardPage() {
+export default function AdminDashboardPage({ children }: { children: React.ReactNode}) {
 
     const [user, setUser] = useState<User | null>(null)
 
-    const [fallData, setFallData] = useState<Tables<'falldetection'>[] | null>(null)
+    // const [fallData, setFallData] = useState<Tables<'falldetection'>[] | null>(null)
 
     async function handleLogout() {
         const loggedOut = await logout()
@@ -42,15 +38,6 @@ export default function AdminDashboardPage() {
         let mounted = true
 
         async function obtainUser() {
-
-            const falls = await getFallDetection()
-            setFallData(falls)
-            //
-            console.log("INITIALISING............")
-            console.log("INITIALISING............")
-            console.log("INITIALISING............")
-            console.log(falls)
-
             try {
                 // setIsLoading(true)
                 const authResponse = await getUser()
@@ -132,16 +119,9 @@ export default function AdminDashboardPage() {
                     </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4">
-                    <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-                        <div className="aspect-video rounded-xl bg-muted/50">
-                            <Chart1/>
-                        </div>
-                        <div className="aspect-video rounded-xl bg-muted/50">
-                            <Chart2/>
-                        </div>
-                        {/*<div className="aspect-video rounded-xl bg-muted/50"/>*/}
+                    <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min">
+                        {children}
                     </div>
-                    <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min"/>
                 </div>
             </SidebarInset>
         </SidebarProvider>
