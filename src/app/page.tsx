@@ -1,18 +1,20 @@
-'use client'
+'use client';
 
-import AdminDashboardPage from "@/app/dashboard/page";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export default function Home() {
+function Home() {
+    const router = useRouter();
+
+    useEffect(() => {
+        router.push('/systeminfo');
+    }, [router]);
+
     return (
-        <div className='flex-col py-5'>
-            <AdminDashboardPage/>
-
-
-
-            {/*    /!*<h1>CHRIST FOREVER!</h1>*!/*/}
-            {/*    /!*<p>Welcome to the BSE 25-07 website!</p>*!/*/}
-            {/*</div>*/}
-        </div>
-
+        <>
+        </>
     );
 }
+
+export default dynamic(() => Promise.resolve(Home), { ssr: false });
