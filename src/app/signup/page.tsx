@@ -29,7 +29,7 @@ export default function SignUpPage() {
   }, [router, pathname]);
 
   return (
-    <div className="flex h-screen w-full items-center justify-center px-4">
+    <div className="flex min-h-screen w-full items-center justify-center px-4">
       <SignUpForm />
       {/* <p>Christus Semper!</p> */}
     </div>

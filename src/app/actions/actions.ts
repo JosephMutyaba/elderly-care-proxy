@@ -5,6 +5,16 @@ import { createClient } from "@/supabase/server";
 
 import { Tables } from "@/supabase/database.types";
 
+type UsersRow = {
+    created_at: string;
+    device_identifier: string | null; // Ensure this is present
+    email: string;
+    id: string;
+    name: string;
+    password: string;
+    role: string;
+  };
+
 
 // Adjust the type if necessary according to your actual table and column types
 export async function getFallDetection(date: string = new Date().toISOString().split("T")[0], hour: number = new Date().getHours()):Promise<Tables<'falldetection'>[]|null> {
@@ -69,11 +79,25 @@ export async function getHeartbeatAndOxygenLevel(date: string = new Date().toISO
         return null
     }
 
+    const loggedInUserAccount = await retrieveLoggedInUserAccount();
+    if (!loggedInUserAccount) {
+        console.log("No user account found for the logged-in user.")
+        return null;
+    }
+    console.log(`User acc: ${loggedInUserAccount.device_identifier}`);
+
+
+    // Check if the device identifier is not null
+    if (!loggedInUserAccount.device_identifier) {
+        console.log("Device identifier is null.")
+        return null;
+    }
     // querying the db for the device associated with the logged-in user account
     const {data:deviceData, error: deviceError} = await supabase
         .from('devices')
         .select('*')
-        .eq('user_id', loggedInUser?.data.user.id)
+        .eq('device_name', loggedInUserAccount.device_identifier)
+        .eq('status', true)
         .returns<Tables<'devices'>>()
         .single() as { data: Tables<'devices'> | null, error: null };
 
@@ -88,7 +112,7 @@ export async function getHeartbeatAndOxygenLevel(date: string = new Date().toISO
     const { data, error } = await supabase
         .from('heartrate')
         .select('*')
-        .eq('device_id', deviceData.id)  // adjust column name here if different in your db schema
+        .eq('device_id', deviceData.device_name)  // adjust column name here if different in your db schema
         .gte('created_at', startTime)
         .lt('created_at', endTime)
         .returns<Tables<'heartrate'>[]>();
@@ -100,6 +124,23 @@ export async function getHeartbeatAndOxygenLevel(date: string = new Date().toISO
 
     return data;
 }
+
+// fetch the logged-n useraccount
+export async function retrieveLoggedInUserAccount() : Promise<Tables<'users'> | null> {
+    const supabase = await createClient();
+    const loggedInUser = await supabase.auth.getUser()
+    if(loggedInUser ){
+        // fetchAssociated User Account
+        const {data, error} = await supabase.from('users').select('*').eq('id', loggedInUser.data.user?.id).returns<Tables<'users'>>().single();
+        if (error) {
+            console.error("Error fetching user account:", error);
+            return null;
+        }
+        return data;
+    }
+    return null;
+}
+
 
 export async function getLocationData(date: string = new Date().toISOString().split("T")[0], hour: number = new Date().getHours()): Promise<Tables<'locationdata'>[] | null> {
     const supabase =await createClient();

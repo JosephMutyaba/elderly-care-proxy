@@ -28,9 +28,8 @@ export default function Page() {
   }, [router, pathname]);
 
   return (
-    <div className="flex h-screen w-full items-center justify-center px-4">
+    <div className="flex min-h-dvh w-full items-center justify-center">
       <LoginForm />
-      {/* <p>Christus Semper!</p> */}
     </div>
   )
 }

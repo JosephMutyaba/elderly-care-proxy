@@ -12,24 +12,21 @@ export type Database = {
       devices: {
         Row: {
           created_at: string
-          device_name: string | null
+          device_name: string
           id: number
           status: boolean | null
-          user_id: string | null
         }
         Insert: {
           created_at?: string
-          device_name?: string | null
+          device_name: string
           id?: number
           status?: boolean | null
-          user_id?: string | null
         }
         Update: {
           created_at?: string
-          device_name?: string | null
+          device_name?: string
           id?: number
           status?: boolean | null
-          user_id?: string | null
         }
         Relationships: []
       }
@@ -57,21 +54,21 @@ export type Database = {
       heartrate: {
         Row: {
           created_at: string
-          device_id: number
+          device_id: string
           heart_rate: number | null
           id: number
           spo2: number | null
         }
         Insert: {
           created_at?: string
-          device_id: number
+          device_id: string
           heart_rate?: number | null
           id?: number
           spo2?: number | null
         }
         Update: {
           created_at?: string
-          device_id?: number
+          device_id?: string
           heart_rate?: number | null
           id?: number
           spo2?: number | null
@@ -81,30 +78,70 @@ export type Database = {
       locationdata: {
         Row: {
           created_at: string
-          device_id: number
+          device_id: string | null
           id: number
           latitude: number | null
           longitude: number | null
         }
         Insert: {
           created_at?: string
-          device_id: number
+          device_id?: string | null
           id?: number
           latitude?: number | null
           longitude?: number | null
         }
         Update: {
           created_at?: string
-          device_id?: number
+          device_id?: string | null
           id?: number
           latitude?: number | null
           longitude?: number | null
         }
         Relationships: []
       }
+      motion_data: {
+        Row: {
+          accel_x: number | null
+          accel_y: number | null
+          accel_z: number | null
+          created_at: string
+          device_id: string
+          gyro_x: number | null
+          gyro_y: number | null
+          gyro_z: number | null
+          id: number
+          temperature: number | null
+        }
+        Insert: {
+          accel_x?: number | null
+          accel_y?: number | null
+          accel_z?: number | null
+          created_at?: string
+          device_id: string
+          gyro_x?: number | null
+          gyro_y?: number | null
+          gyro_z?: number | null
+          id?: number
+          temperature?: number | null
+        }
+        Update: {
+          accel_x?: number | null
+          accel_y?: number | null
+          accel_z?: number | null
+          created_at?: string
+          device_id?: string
+          gyro_x?: number | null
+          gyro_y?: number | null
+          gyro_z?: number | null
+          id?: number
+          temperature?: number | null
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           created_at: string
+          device_identifier: string | null
           email: string
           id: string
           name: string
@@ -113,6 +150,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          device_identifier?: string | null
           email: string
           id: string
           name: string
@@ -121,6 +159,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          device_identifier?: string | null
           email?: string
           id?: string
           name?: string

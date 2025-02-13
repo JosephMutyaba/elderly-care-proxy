@@ -1,11 +1,9 @@
-import {Chart1} from "@/app/charts/twomodelchart";
+import { HeartAndOxygenLevelCharts } from "@/app/charts/heartrateandoxygen";
 
-export default function HeartRateAndOxygenPage (){
+export default function HeartRateAndOxygenPage() {
     return (
-        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-            <div className="aspect-video rounded-xl bg-muted/50">
-                <Chart1/>
-            </div>
+        <div className="rounded-xl bg-muted/50 w-full">
+            <HeartAndOxygenLevelCharts />
         </div>
     )
 }
