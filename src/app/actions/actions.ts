@@ -4,17 +4,7 @@
 import { createClient } from "@/supabase/server";
 
 import { Tables } from "@/supabase/database.types";
-
-type UsersRow = {
-    created_at: string;
-    device_identifier: string | null; // Ensure this is present
-    email: string;
-    id: string;
-    name: string;
-    password: string;
-    role: string;
-  };
-
+import { retrieveLoggedInUserAccount } from "./useractions";
 
 // Adjust the type if necessary according to your actual table and column types
 export async function getFallDetection(date: string = new Date().toISOString().split("T")[0], hour: number = new Date().getHours()):Promise<Tables<'falldetection'>[]|null> {
@@ -123,22 +113,6 @@ export async function getHeartbeatAndOxygenLevel(date: string = new Date().toISO
     }
 
     return data;
-}
-
-// fetch the logged-n useraccount
-export async function retrieveLoggedInUserAccount() : Promise<Tables<'users'> | null> {
-    const supabase = await createClient();
-    const loggedInUser = await supabase.auth.getUser()
-    if(loggedInUser ){
-        // fetchAssociated User Account
-        const {data, error} = await supabase.from('users').select('*').eq('id', loggedInUser.data.user?.id).returns<Tables<'users'>>().single();
-        if (error) {
-            console.error("Error fetching user account:", error);
-            return null;
-        }
-        return data;
-    }
-    return null;
 }
 
 
