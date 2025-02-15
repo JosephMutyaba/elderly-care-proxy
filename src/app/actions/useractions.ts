@@ -18,3 +18,7 @@ export async function retrieveLoggedInUserAccount() : Promise<Tables<'users'> | 
     }
     return null;
 }
+
+export async function fetchPaginatedUsers(){
+
+}
