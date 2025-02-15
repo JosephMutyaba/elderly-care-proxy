@@ -69,6 +69,12 @@ export function MotionDataCharts() {
         }
 
         fetchAndProcessData();
+
+        // Set up interval for subsequent fetches
+        const intervalId = setInterval(fetchAndProcessData, 60000); // 60000 ms = 1 minute
+
+        // Cleanup function to clear the interval when component unmounts
+        return () => clearInterval(intervalId);
     }, [selectedDate, selectedHour]);
 
     return (

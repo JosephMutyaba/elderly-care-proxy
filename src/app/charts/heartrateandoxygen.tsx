@@ -6,7 +6,6 @@ import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -17,7 +16,7 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
-import { getHeartbeatAndOxygenLevel } from "@/app/actions/actions";
+import {getHeartbeatAndOxygenLevel} from "@/app/actions/heartrateoxygen_actions";
 
 // Chart configuration
 const chartConfig = {
@@ -51,9 +50,14 @@ export function HeartAndOxygenLevelCharts() {
         }
 
         fetchAndProcessData();
+
+        // Set up interval for subsequent fetches
+        const intervalId = setInterval(fetchAndProcessData, 60000); // 60000 ms = 1 minute
+
+        // Cleanup function to clear the interval when component unmounts
+        return () => clearInterval(intervalId);
+
     }, [selectedDate, selectedHour]);
-
-
 
     return (
         <div className="w-full p-4">

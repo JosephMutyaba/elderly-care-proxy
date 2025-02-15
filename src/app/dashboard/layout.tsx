@@ -15,6 +15,7 @@ import {getUser, logout} from "@/app/login/actions";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {createClient} from "@/supabase/client";
+import {Activity} from "lucide-react";
 
 export default function AdminDashboardPage({ children }: { children: React.ReactNode}) {
 
@@ -88,27 +89,20 @@ export default function AdminDashboardPage({ children }: { children: React.React
     return (
         <SidebarProvider>
             <AppSidebar/>
-            <SidebarInset>
+            <SidebarInset className={'flex flex-col'}>
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
                     <SidebarTrigger className="-ml-1"/>
                     <Separator orientation="vertical" className="mr-2 h-4"/>
-                    {/*<Breadcrumb>*/}
-                    {/*  <BreadcrumbList>*/}
-                    {/*    <BreadcrumbItem className="hidden md:block">*/}
-                    {/*      <BreadcrumbLink href="#">*/}
-                    {/*        Building Your Application*/}
-                    {/*      </BreadcrumbLink>*/}
-                    {/*    </BreadcrumbItem>*/}
-                    {/*    <BreadcrumbSeparator className="hidden md:block" />*/}
-                    {/*    <BreadcrumbItem>*/}
-                    {/*      <BreadcrumbPage>Data Fetching</BreadcrumbPage>*/}
-                    {/*    </BreadcrumbItem>*/}
-                    {/*  </BreadcrumbList>*/}
-                    {/*</Breadcrumb>*/}
+
                     <div className='flex justify-between items-center gap-5 border-b py-3 w-full'>
+                        <div className="flex justify-center items-center space-x-2">
+                            <Activity className="w-8 h-8 text-blue-600"/>
+                            <p className="text-blue-600 font-semibold text-2xl">
+                                ECCMS
+                            </p>
+                        </div>
                         <div className="flex justify-between gap-2 px-2">
-                            <h1>BSE 25-07</h1>
-                            <p>Welcome, {user?.name}</p>
+                            <p>Hi, {user?.name}</p>
                         </div>
                         <div className="flex justify-between gap-2 px-2">
                             <ModeToggle/>

@@ -1,7 +1,17 @@
 import * as React from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { Heart, Map, Activity, Bell, LineChart } from "lucide-react"
+import {
+  Heart,
+  Map,
+  Activity,
+  Bell,
+  LineChart,
+  User,
+  Users,
+  Tablet,
+  MapPin,
+  HeartPulse } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +21,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
+
 } from "@/components/ui/sidebar"
 
 const data = {
@@ -45,7 +55,6 @@ const data = {
   ],
 }
 
-
 const dataSettings = {
   navMain: [
     {
@@ -53,28 +62,37 @@ const dataSettings = {
         {
           title: "Profile",
           url: "/systeminfo/myprofile",
-          icon: Heart,
+          icon: User, // Represents a user's profile
         },
         {
-          title: "Realtime Location",
-          url: "/systeminfo/googlemap",
-          icon: Map,
+          title: "Users",
+          url: "/systeminfo/users",
+          icon: Users, // Represents multiple users
         },
         {
-          title: "Motion Charts",
-          url: "/systeminfo/motion",
-          icon: LineChart,
+          title: "Devices",
+          url: "/systeminfo/devices_admin",
+          icon: Tablet, // Represents a device or tablet
         },
         {
-          title: "Alerts",
+          title: "Motion Data",
+          url: "/systeminfo/motion_admin",
+          icon: Activity, // Represents movement/motion
+        },
+        {
+          title: "Location Data",
           url: "/systeminfo/alerts",
-          icon: Bell,
+          icon: MapPin, // Represents location tracking
+        },
+        {
+          title: "SPO2 & Heart Rate",
+          url: "/systeminfo/alerts",
+          icon: HeartPulse, // Represents heart rate & oxygen levels
         },
       ],
     },
   ],
-}
-
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const path = usePathname()
@@ -82,7 +100,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <>
       <Sidebar {...props} className="bg-white w-64">
-        <SidebarHeader className="py-4 px-4">
+        <SidebarHeader className="py-4 px-4 sticky">
           <div className="flex justify-center items-center space-x-2">
             <Activity className="w-8 h-8 text-blue-600" />
             <p className="text-blue-600 font-semibold text-2xl">
@@ -92,79 +110,88 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarHeader>
         <SidebarContent>
           {data.navMain.map((item) => (
-            <SidebarGroup key={item.title}>
-              <SidebarGroupContent>
-                <SidebarHeader>
-                  <div className="flex items-center space-x-2">
-                    <p className="text-blue-600 font-semibold text-lg">
-                      Analytics
-                    </p>
-                  </div>
-                </SidebarHeader>
+              <SidebarGroup key={item.title}>
+                <SidebarGroupContent>
+                  <SidebarHeader>
+                    <div className="flex items-center space-x-2">
+                      <p className="text-blue-600 font-semibold text-lg">
+                        Analytics
+                      </p>
+                    </div>
+                  </SidebarHeader>
 
-                <SidebarMenu>
-                  {item.items.map((menuItem) => {
-                    const Icon = menuItem.icon
-                    return (
-                      <SidebarMenuItem key={menuItem.title}>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={path === menuItem.url}
-                        >
-                          <Link
-                            href={menuItem.url}
+                  <SidebarMenu>
+                    {item.items.map((menuItem) => {
+                      const Icon = menuItem.icon
+                      return (
+                          <SidebarMenuItem key={menuItem.title}>
+                            <SidebarMenuButton
+                                asChild
+                                isActive={path === menuItem.url}
+                            >
+                              <Link
+                                  href={menuItem.url}
 
-                            className={`flex items-center px-4 py-2 space-x-3 hover:bg-gray-50 ${path === menuItem.url
-                              ? "text-blue-600"
-                              : "text-gray-600"
-                              }`}
-                          >
-                            <Icon className="w-4 h-4" />
-                            <span className="text-sm font-medium">
+                                  className={`flex items-center px-4 py-2 space-x-3 hover:bg-gray-50 ${path === menuItem.url
+                                      ? "text-blue-600"
+                                      : "text-gray-600"
+                                  }`}
+                              >
+                                <Icon className="w-4 h-4" />
+                                <span className="text-sm font-medium">
                               {menuItem.title}
                             </span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    )
-                  })}
-                </SidebarMenu>
-                <SidebarHeader>
-                  <div className="flex items-center space-x-2">
-                    <p className="text-blue-600 font-semibold text-lg">
-                      Settings
-                    </p>
-                  </div>
-                </SidebarHeader>
-                <SidebarMenu>
-                  {item.items.map((menuItem) => {
-                    const Icon = menuItem.icon
-                    return (
-                      <SidebarMenuItem key={menuItem.title}>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={path === menuItem.url}
-                        >
-                          <Link
-                            href={menuItem.url}
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                      )
+                    })}
+                  </SidebarMenu>
 
-                            className={`flex items-center px-4 py-2 space-x-3 hover:bg-gray-50 ${path === menuItem.url
-                              ? "text-blue-600"
-                              : "text-gray-600"
-                              }`}
-                          >
-                            <Icon className="w-4 h-4" />
-                            <span className="text-sm font-medium">
+                </SidebarGroupContent>
+              </SidebarGroup>
+          ))}
+
+
+          {dataSettings.navMain.map((item) => (
+              <SidebarGroup key={'settings'}>
+                <SidebarGroupContent>
+                  <SidebarHeader>
+                    <div className="flex items-center space-x-2">
+                      <p className="text-blue-600 font-semibold text-lg">
+                        Settings
+                      </p>
+                    </div>
+                  </SidebarHeader>
+                  <SidebarMenu>
+                    {item.items.map((menuItem) => {
+                      const Icon = menuItem.icon
+                      return (
+                          <SidebarMenuItem key={menuItem.title}>
+                            <SidebarMenuButton
+                                asChild
+                                isActive={path === menuItem.url}
+                            >
+                              <Link
+                                  href={menuItem.url}
+
+                                  className={`flex items-center px-4 py-2 space-x-3 hover:bg-gray-50 ${path === menuItem.url
+                                      ? "text-blue-600"
+                                      : "text-gray-600"
+                                  }`}
+                              >
+                                <Icon className="w-4 h-4" />
+                                <span className="text-sm font-medium">
                               {menuItem.title}
                             </span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    )
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                      )
+                    })}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
           ))}
         </SidebarContent>
 

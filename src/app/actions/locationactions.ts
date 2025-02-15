@@ -1,15 +1,13 @@
-"use server";
-
-// function to fetch fall-detection values from db
-import { createClient } from "@/supabase/server";
+'use server'
 
 import { Tables } from "@/supabase/database.types";
-import { retrieveLoggedInUserAccount } from "./useractions";
+import { createClient } from "@/supabase/server";
+import { retrieveLoggedInUserAccount } from "@/app/actions/useractions";
 
-export async function getMotionValues(
+export async function getLocationData(
     date: string = new Date().toLocaleDateString('en-CA'), // Format: YYYY-MM-DD in local time
     hour: number = new Date().getHours() // Local hour
-): Promise<Tables<'motion_data'>[] | null> {
+): Promise<Tables<'locationdata'>[] | null> {
     const supabase = await createClient();
 
     // Convert local date and hour to UTC for database query
@@ -24,12 +22,11 @@ export async function getMotionValues(
     const startTimeUTC = startTime.toISOString();
     const endTimeUTC = endTime.toISOString();
 
-    console.log(`Querying motion data for time range: ${startTimeUTC} to ${endTimeUTC}`);
+    console.log(`Querying for time range: ${startTimeUTC} to ${endTimeUTC}`);
     console.log(`Local time was: ${date} ${hour}:00`);
 
-    // Getting logged-in user
+    // getting logged in user
     const loggedInUser = await supabase.auth.getUser();
-
     if (!loggedInUser.data.user) {
         console.log("User is not logged in.");
         return null;
@@ -46,7 +43,6 @@ export async function getMotionValues(
         return null;
     }
 
-    // Query the database for the user's device
     const { data: deviceData, error: deviceError } = await supabase
         .from('devices')
         .select('*')
@@ -60,17 +56,17 @@ export async function getMotionValues(
         return null;
     }
 
-    // Fetch motion data within the specified UTC time range
+    // Fetch data within the specified UTC time range
     const { data, error } = await supabase
-        .from('motion_data')
+        .from('locationdata')
         .select('*')
         .eq('device_id', deviceData.device_name)
         .gte('created_at', startTimeUTC)
         .lt('created_at', endTimeUTC)
-        .returns<Tables<'motion_data'>[]>();
+        .returns<Tables<'locationdata'>[]>();
 
     if (error) {
-        console.error("Error fetching motion data:", error);
+        console.error("Error fetching location data:", error);
         return null;
     }
 
@@ -82,51 +78,13 @@ export async function getMotionValues(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export async function getMotionValues(date: string = new Date().toISOString().split("T")[0], hour: number = new Date().getHours()): Promise<Tables<'motion_data'>[] | null> {
+// 'use server'
+//
+// import {Tables} from "@/supabase/database.types";
+// import {createClient} from "@/supabase/server";
+// import {retrieveLoggedInUserAccount} from "@/app/actions/useractions";
+//
+// export async function getLocationData(date: string = new Date().toISOString().split("T")[0], hour: number = new Date().getHours()): Promise<Tables<'locationdata'>[] | null> {
 //     const supabase =await createClient();
 //
 //     // Calculate the start and end timestamps for the given date and hour
@@ -135,6 +93,7 @@ export async function getMotionValues(
 //
 //     // getting logged in user
 //     const loggedInUser = await supabase.auth.getUser()
+//     console.log(`Logged in user ${loggedInUser.data.user?.email}`)
 //
 //     // If the user is not logged in, return null
 //     if (!loggedInUser.data.user) {
@@ -169,17 +128,18 @@ export async function getMotionValues(
 //     }
 //
 //
+//
 //     // Fetch data within the specified time range
 //     const { data, error } = await supabase
-//         .from('motion_data')
+//         .from('locationdata')
 //         .select('*')
 //         .eq('device_id', deviceData.device_name)  // adjust column name here if different in your db schema
 //         .gte('created_at', startTime)
 //         .lt('created_at', endTime)
-//         .returns<Tables<'motion_data'>[]>();
+//         .returns<Tables<'locationdata'>[]>();
 //
 //     if (error) {
-//         console.error("Error fetching heartbeat and oxygen level data:", error);
+//         console.error("Error fetching location data:", error);
 //         return null;
 //     }
 //
