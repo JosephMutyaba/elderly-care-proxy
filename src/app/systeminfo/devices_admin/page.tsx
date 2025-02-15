@@ -3,8 +3,9 @@
 import {useEffect, useState} from 'react';
 import PaginatedDevicesTable from "@/app/customcomponents/PaginatedDevicesTable";
 import {Tables} from "@/supabase/database.types";
-import {getDevices} from "@/app/actions/devicesActions";
+import {getDevices, getDevicesCount} from "@/app/actions/devicesActions";
 import { toast } from "sonner"
+import {getMotionDataCount} from "@/app/actions/motion_sensor_actions";
 
 
 export default function DevicesPage() {
@@ -16,13 +17,14 @@ export default function DevicesPage() {
     // Fetch devices from Supabase
     const fetchDevices = async () => {
         const { data, count, error } = await getDevices(currentPage, pageSize);
+        const { count: countTotal, error:countError } = await getDevicesCount();
 
-        if (error) {
+        if (error || countError) {
             toast.error("Failed to fetch devices. Please try again later.");
             return;
         }
         setDevices(data);
-        setTotalDevices(count);
+        setTotalDevices(countTotal);
     };
 
     useEffect(() => {
@@ -40,6 +42,7 @@ export default function DevicesPage() {
                 pageSize={pageSize}
                 currentPage={currentPage}
                 onPageChange={setCurrentPage}
+                records={totalDevices}
             />
         </div>
     );

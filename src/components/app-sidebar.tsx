@@ -66,7 +66,7 @@ const dataSettings = {
         },
         {
           title: "Users",
-          url: "/systeminfo/users",
+          url: "/systeminfo/users_admin",
           icon: Users, // Represents multiple users
         },
         {
@@ -76,17 +76,17 @@ const dataSettings = {
         },
         {
           title: "Motion Data",
-          url: "/systeminfo/motion_admin",
+          url: "/systeminfo/motion_data_admin",
           icon: Activity, // Represents movement/motion
         },
         {
           title: "Location Data",
-          url: "/systeminfo/alerts",
+          url: "/systeminfo/locationsadmin",
           icon: MapPin, // Represents location tracking
         },
         {
           title: "SPO2 & Heart Rate",
-          url: "/systeminfo/alerts",
+          url: "/systeminfo/heartrateadmin",
           icon: HeartPulse, // Represents heart rate & oxygen levels
         },
       ],

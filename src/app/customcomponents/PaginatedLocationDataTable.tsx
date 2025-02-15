@@ -10,79 +10,48 @@ import {
 } from "@/components/ui/pagination";
 import {Tables} from "@/supabase/database.types";
 
-interface PaginatedDevicesTableProps {
-    devices : Tables<'devices'>[] | null;
+interface PaginatedLocationDataTableProps {
+    locationRecords : Tables<'locationdata'>[] | null;
     onPageChange: (page: number) => void;
     currentPage : number;
     pageSize : number;
     records : number | null;
 }
 
-const PaginatedDevicesTable = ({devices, pageSize = 10, currentPage = 1, onPageChange, records}:PaginatedDevicesTableProps) => {
+const PaginatedLocationDataTable = ({locationRecords, pageSize = 10, currentPage = 1, onPageChange, records}:PaginatedLocationDataTableProps) => {
     const totalPages = (records != null && pageSize > 0) ? Math.ceil(records / pageSize) : 1;
 
     const startIndex = (currentPage - 1) * pageSize;
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 overflow-x-auto">
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Device ID</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>No.</TableHead>
+                        <TableHead>Device</TableHead>
+                        <TableHead>Longitude</TableHead>
+                        <TableHead>Latitude</TableHead>
                         <TableHead>Last Updated</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {devices?.map((device, index) => (
-                        <TableRow key={device.id}>
+                    {locationRecords?.map((locationRecord, index) => (
+                        <TableRow key={locationRecord.id}>
                             <TableCell className="font-medium">{startIndex + index + 1}</TableCell>
-                            <TableCell>{device.device_name}</TableCell>
-                            <TableCell>
-                                <span className={`px-2 py-1 rounded-full text-xs ${
-                                    device.status ? 'bg-green-100 text-green-800' :
-                                        'bg-red-100 text-red-800'
-                                }`}>
-                                  {device.status}
-                                </span>
-                            </TableCell>
-                            <TableCell>{new Date(device.created_at).toLocaleDateString()}</TableCell>
+                            <TableCell>{locationRecord.device_id}</TableCell>
+                            <TableCell>{locationRecord.longitude}</TableCell>
+                            <TableCell>{locationRecord.latitude}</TableCell>
+                            <TableCell>{new Date(locationRecord.created_at).toLocaleDateString()}</TableCell>
                         </TableRow>
                     ))}
-                    {devices && devices.length === 0 && (
+                    {locationRecords && locationRecords.length === 0 && (
                         <TableRow>
-                            <TableCell colSpan={4}>No devices found.</TableCell>
+                            <TableCell colSpan={4}>No locationRecords found.</TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
 
-            {/*<Pagination>*/}
-            {/*    <PaginationContent>*/}
-            {/*        <PaginationItem>*/}
-            {/*            <PaginationPrevious*/}
-            {/*                onClick={() => onPageChange(currentPage - 1)}*/}
-            {/*                className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}*/}
-            {/*            />*/}
-            {/*        </PaginationItem>*/}
-            {/*        {[...Array(totalPages)].map((_, index) => (*/}
-            {/*            <PaginationItem key={index + 1}>*/}
-            {/*                <PaginationLink*/}
-            {/*                    onClick={() => onPageChange(index + 1)}*/}
-            {/*                    isActive={currentPage === index + 1}*/}
-            {/*                >*/}
-            {/*                    {index + 1}*/}
-            {/*                </PaginationLink>*/}
-            {/*            </PaginationItem>*/}
-            {/*        ))}*/}
-            {/*        <PaginationItem>*/}
-            {/*            <PaginationNext*/}
-            {/*                onClick={() => onPageChange(currentPage + 1)}*/}
-            {/*                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}*/}
-            {/*            />*/}
-            {/*        </PaginationItem>*/}
-            {/*    </PaginationContent>*/}
-            {/*</Pagination>*/}
             <Pagination>
                 <PaginationContent>
                     <PaginationItem>
@@ -134,8 +103,9 @@ const PaginatedDevicesTable = ({devices, pageSize = 10, currentPage = 1, onPageC
                     </PaginationItem>
                 </PaginationContent>
             </Pagination>
+
         </div>
     );
 };
 
-export default PaginatedDevicesTable;
+export default PaginatedLocationDataTable;

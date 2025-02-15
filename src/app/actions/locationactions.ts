@@ -73,75 +73,92 @@ export async function getLocationData(
     return data;
 }
 
+export async function getLocationsAdmin(page: number = 1,
+                                    pageSize: number = 10,
+                                    searchQuery: string = '',
+                                    sortBy: string = 'created_at',
+                                    sortOrder: 'asc' | 'desc' = 'desc'
+): Promise<{
+    data: Tables<'locationdata'>[] | null
+    count: number | null
+    error: Error | null
+}> {
+    try {
+        // Initialize Supabase client
+        const supabase = await createClient(); // Remove 'await' since createClient() isn't async
+
+        // Calculate the range for pagination
+        const start = (page - 1) * pageSize;
+        const end = start + pageSize - 1;
+
+        // Create base query
+        let query = supabase
+            .from('locationdata')
+            .select('*', { count: 'exact' });
+
+        // Add search if provided
+        if (searchQuery) {
+            query = query.or(`device_id.ilike.%${searchQuery}%`);
+        }
+
+        // Add sorting
+        query = query.order(sortBy, { ascending: sortOrder === 'asc' });
+
+        // Add pagination
+        query = query.range(start, end);
+
+        // Execute query
+        const { data, error, count } = await query;
+
+        if (error) {
+            console.error("Error fetching locationdata:", error);
+            return { data: null, count: null, error };
+        }
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        return { data, count, error: null };
+
+    } catch (error) {
+        console.error('Error fetching locationdata:', error);
+        return { data: null, count: null, error: error as Error };
+    }
+}
+
+
+export async function getLocationsAdminCount( searchQuery: string = ''): Promise<{
+    count: number | null
+    error: Error | null
+}> {
+    try {
+        // Initialize Supabase client
+        const supabase = await createClient(); // Remove 'await' since createClient() isn't async
+
+        // Create base query
+        let query = supabase
+            .from('locationdata')
+            .select('*', { count: 'exact' });
+
+        // Add search if provided
+        if (searchQuery) {
+            query = query.or(`device_id.ilike.%${searchQuery}%`);
+        }
+
+        // Execute query
+        const { data, error, count } = await query;
+
+        if (error) {
+            console.error("Error fetching locationdata:", error);
+            return { count: null, error };
+        }
+
+        return { count, error: null };
+
+    } catch (error) {
+        console.error('Error fetching locationdata:', error);
+        return { count: null, error: error as Error };
+    }
+}
 
 
 
-
-
-// 'use server'
-//
-// import {Tables} from "@/supabase/database.types";
-// import {createClient} from "@/supabase/server";
-// import {retrieveLoggedInUserAccount} from "@/app/actions/useractions";
-//
-// export async function getLocationData(date: string = new Date().toISOString().split("T")[0], hour: number = new Date().getHours()): Promise<Tables<'locationdata'>[] | null> {
-//     const supabase =await createClient();
-//
-//     // Calculate the start and end timestamps for the given date and hour
-//     const startTime = new Date(`${date}T${hour.toString().padStart(2, '0')}:00:00`).toISOString();
-//     const endTime = new Date(`${date}T${hour.toString().padStart(2, '0')}:59:59`).toISOString();
-//
-//     // getting logged in user
-//     const loggedInUser = await supabase.auth.getUser()
-//     console.log(`Logged in user ${loggedInUser.data.user?.email}`)
-//
-//     // If the user is not logged in, return null
-//     if (!loggedInUser.data.user) {
-//         console.log("User is not logged in.")
-//         return null
-//     }
-//
-//     const loggedInUserAccount = await retrieveLoggedInUserAccount();
-//     if (!loggedInUserAccount) {
-//         console.log("No user account found for the logged-in user.")
-//         return null;
-//     }
-//
-//     // Check if the device identifier is not null
-//     if (!loggedInUserAccount.device_identifier) {
-//         console.log("Device identifier is null.")
-//         return null;
-//     }
-//     // querying the db for the device associated with the logged-in user account
-//     const {data:deviceData, error: deviceError} = await supabase
-//         .from('devices')
-//         .select('*')
-//         .eq('device_name', loggedInUserAccount.device_identifier)
-//         .eq('status', true)
-//         .returns<Tables<'devices'>>()
-//         .single() as { data: Tables<'devices'> | null, error: null };
-//
-//     // If no device is found for the user, return null
-//     if (!deviceData) {
-//         console.log("No device found for the logged-in user.")
-//         return null
-//     }
-//
-//
-//
-//     // Fetch data within the specified time range
-//     const { data, error } = await supabase
-//         .from('locationdata')
-//         .select('*')
-//         .eq('device_id', deviceData.device_name)  // adjust column name here if different in your db schema
-//         .gte('created_at', startTime)
-//         .lt('created_at', endTime)
-//         .returns<Tables<'locationdata'>[]>();
-//
-//     if (error) {
-//         console.error("Error fetching location data:", error);
-//         return null;
-//     }
-//
-//     return data;
-// }

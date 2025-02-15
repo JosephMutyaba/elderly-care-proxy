@@ -10,48 +10,44 @@ import {
 } from "@/components/ui/pagination";
 import {Tables} from "@/supabase/database.types";
 
-interface PaginatedDevicesTableProps {
-    devices : Tables<'devices'>[] | null;
+interface PaginatedUsersTableProps {
+    users : Tables<'users'>[] | null;
     onPageChange: (page: number) => void;
     currentPage : number;
     pageSize : number;
     records : number | null;
 }
 
-const PaginatedDevicesTable = ({devices, pageSize = 10, currentPage = 1, onPageChange, records}:PaginatedDevicesTableProps) => {
+const PaginatedUsersTable = ({users, pageSize = 10, currentPage = 1, onPageChange, records}:PaginatedUsersTableProps) => {
     const totalPages = (records != null && pageSize > 0) ? Math.ceil(records / pageSize) : 1;
-
     const startIndex = (currentPage - 1) * pageSize;
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 overflow-x-auto">
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Device ID</TableHead>
+                        <TableHead>User #</TableHead>
                         <TableHead>Name</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Device_Identifier</TableHead>
+                        <TableHead>Role</TableHead>
                         <TableHead>Last Updated</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {devices?.map((device, index) => (
-                        <TableRow key={device.id}>
+                    {users?.map((user, index) => (
+                        <TableRow key={user.id}>
                             <TableCell className="font-medium">{startIndex + index + 1}</TableCell>
-                            <TableCell>{device.device_name}</TableCell>
-                            <TableCell>
-                                <span className={`px-2 py-1 rounded-full text-xs ${
-                                    device.status ? 'bg-green-100 text-green-800' :
-                                        'bg-red-100 text-red-800'
-                                }`}>
-                                  {device.status}
-                                </span>
-                            </TableCell>
-                            <TableCell>{new Date(device.created_at).toLocaleDateString()}</TableCell>
+                            <TableCell>{user.name}</TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>{user.device_identifier}</TableCell>
+                            <TableCell>{user.role}</TableCell>
+                            <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                         </TableRow>
                     ))}
-                    {devices && devices.length === 0 && (
+                    {users && users.length === 0 && (
                         <TableRow>
-                            <TableCell colSpan={4}>No devices found.</TableCell>
+                            <TableCell colSpan={4}>No users found.</TableCell>
                         </TableRow>
                     )}
                 </TableBody>
@@ -83,6 +79,10 @@ const PaginatedDevicesTable = ({devices, pageSize = 10, currentPage = 1, onPageC
             {/*        </PaginationItem>*/}
             {/*    </PaginationContent>*/}
             {/*</Pagination>*/}
+
+
+
+
             <Pagination>
                 <PaginationContent>
                     <PaginationItem>
@@ -134,8 +134,9 @@ const PaginatedDevicesTable = ({devices, pageSize = 10, currentPage = 1, onPageC
                     </PaginationItem>
                 </PaginationContent>
             </Pagination>
+
         </div>
     );
 };
 
-export default PaginatedDevicesTable;
+export default PaginatedUsersTable;
