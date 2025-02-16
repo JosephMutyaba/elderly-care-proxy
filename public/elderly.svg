@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+    <!-- Main container -->
+    <rect x="40" y="40" width="220" height="220" rx="40" fill="#2563EB"/>
+
+    <!-- Inner rounded square for depth -->
+    <rect x="50" y="50" width="200" height="200" rx="35" fill="#1E40AF"/>
+
+    <!-- Stylized house/home symbol -->
+    <path d="M90 160
+           L150 100
+           L210 160
+           L190 160
+           L190 200
+           L110 200
+           L110 160
+           Z"
+          fill="white"/>
+
+    <!-- Heart symbol integrated with house -->
+    <path d="M150 180
+           C150 180, 180 160, 180 140
+           C180 130, 170 120, 160 120
+           C153 120, 150 125, 150 125
+           C150 125, 147 120, 140 120
+           C130 120, 120 130, 120 140
+           C120 160, 150 180, 150 180Z"
+          fill="#FF6B6B"/>
+
+    <!-- Plus symbol for medical aspect -->
+    <path d="M185 85 L205 85 L205 105 L185 105 Z" fill="white"/>
+</svg>

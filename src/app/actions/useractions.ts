@@ -2,6 +2,7 @@
 
 import { Tables } from "@/supabase/database.types";
 import { createClient } from "@/supabase/server";
+import {revalidatePath} from "next/cache";
 
 // fetch the logged-n useraccount
 export async function retrieveLoggedInUserAccount() : Promise<Tables<'users'> | null> {
@@ -103,4 +104,67 @@ export async function getUsersCount( searchQuery: string = ''): Promise<{
         console.error('Error fetching users', error);
         return { count: null, error: error as Error };
     }
+}
+
+interface UserProps{
+    name:string
+    email: string
+    password: string
+    device_id: string | null
+}
+
+export async function updateUserProfile(data: UserProps) {
+    const supabase = await createClient()
+
+    const currentlyLoggedInUser = await retrieveLoggedInUserAccount();
+
+    // Get the current user
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+    if (userError || !user) {
+        throw new Error('Authentication error: ' + userError?.message)
+    }
+
+    // Start with auth updates if email or password changed
+    const authUpdateData: { email?: string; password?: string } = {}
+
+    if (data.email !== user.email) {
+        authUpdateData.email = data.email
+    }
+
+    // Only include password in auth update if it's a new password
+    // Don't include password at all if it's not being changed
+    if (data.password?.trim() && (data.password !== currentlyLoggedInUser?.password)) {
+        authUpdateData.password = data.password
+    }
+
+    // Update auth user if needed
+    if (Object.keys(authUpdateData).length > 0) {
+        const { error: updateAuthError } = await supabase.auth.updateUser(authUpdateData)
+
+        if (updateAuthError) {
+            throw new Error('Auth update error: ' + updateAuthError.message)
+        }
+    }
+
+    // Update custom user profile in the users table
+    // Remove password from profile update as it should only be handled by auth
+    const { error: profileError } = await supabase
+        .from('users')
+        .update({
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            device_identifier: data.device_id,
+        })
+        .eq('id', user.id)
+
+    if (profileError) {
+        throw new Error('Profile update error: ' + profileError.message)
+    }
+
+    // Revalidate the profile page to show updated data
+    revalidatePath('/systeminfo/profile')
+
+    return { success: true, error: null }
 }

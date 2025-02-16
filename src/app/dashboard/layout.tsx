@@ -16,6 +16,7 @@ import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {createClient} from "@/supabase/client";
 import {Activity} from "lucide-react";
+import Image from "next/image";
 
 export default function AdminDashboardPage({ children }: { children: React.ReactNode}) {
 
@@ -96,7 +97,8 @@ export default function AdminDashboardPage({ children }: { children: React.React
 
                     <div className='flex justify-between items-center gap-5 border-b py-3 w-full'>
                         <div className="flex justify-center items-center space-x-2">
-                            <Activity className="w-8 h-8 text-blue-600"/>
+                            <Image width={400} height={400} src={'/elderly.svg'} alt={'Logo'} className={'w-16 h-16'}/>
+
                             <p className="text-blue-600 font-semibold text-2xl">
                                 ECCMS
                             </p>

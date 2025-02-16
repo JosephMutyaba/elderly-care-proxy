@@ -23,6 +23,7 @@ import {
   SidebarMenuItem,
 
 } from "@/components/ui/sidebar"
+import Image from "next/image";
 
 const data = {
   navMain: [
@@ -61,7 +62,7 @@ const dataSettings = {
       items: [
         {
           title: "Profile",
-          url: "/systeminfo/myprofile",
+          url: "/systeminfo/profile",
           icon: User, // Represents a user's profile
         },
         {
@@ -102,7 +103,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <Sidebar {...props} className="bg-white w-64">
         <SidebarHeader className="py-4 px-4 sticky">
           <div className="flex justify-center items-center space-x-2">
-            <Activity className="w-8 h-8 text-blue-600" />
+            {/*<Activity className="w-8 h-8 text-blue-600" />*/}
+            <Image width={400} height={400} src={'/elderly.svg'} alt={'Logo'} className={'w-16 h-16'}/>
             <p className="text-blue-600 font-semibold text-2xl">
               ECCMS
             </p>

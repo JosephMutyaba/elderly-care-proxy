@@ -20,6 +20,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Elderly Care",
   description: "This is the elderly care system",
+  icons: "/elderly_favicon.ico",
 };
 
 export default function RootLayout({
